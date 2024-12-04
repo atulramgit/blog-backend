@@ -1,0 +1,49 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Django-related
+*.log
+*.sqlite3
+db.sqlite3
+*.db
+*.db-journal
+staticfiles/
+media/
+
+# Environment variables (if you're using dotenv or similar)
+.env
+.env.*
+*.env
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# Python packaging
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# pytest cache
+.cache/
+
+# MySQL and PostgreSQL databases
+*.mysql
+*.psql
+
+# coverage reports
+.coverage
+.coverage.*
+*.cover
+nosetests.xml
+pytest.xml
+*.dat
