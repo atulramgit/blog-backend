@@ -1,32 +1,42 @@
 from rest_framework import generics
 from blog.models import Post
 from .serializers import PostSerializer
-from .models import Comment
-from .serializers import CommentSerializer
+from .models import Comment, SavedPost
+from .serializers import CommentSerializer, SavedPostSerializer
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .models import SavedPost
-from .serializers import SavedPostSerializer
 
 class SavePostView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        data = request.data
-        data['user'] = request.user.id  # Attach logged-in user
+        user = request.user
+        post_id = request.data.get('post_id')
+        title = request.data.get('title')
+        url = request.data.get('url')
 
-        serializer = SavedPostSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Check if the post is already saved
+        if SavedPost.objects.filter(user=user, post_id=post_id).exists():
+            return Response({"message": "Post already saved"}, status=400)
 
+        saved_post = SavedPost(user=user, post_id=post_id, title=title, url=url)
+        saved_post.save()
+
+        # Serialize the saved post to return its details
+        serializer = SavedPostSerializer(saved_post)
+
+        return Response({"message": "Post saved successfully", "post": serializer.data}, status=201)
+    
     def get(self, request):
-        saved_posts = SavedPost.objects.filter(user=request.user)
+        user = request.user
+        saved_posts = SavedPost.objects.filter(user=user)
+        
+        # Serialize all saved posts for the user
         serializer = SavedPostSerializer(saved_posts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.data)
 
 
 class CommentListCreateView(generics.ListCreateAPIView):

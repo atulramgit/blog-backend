@@ -6,8 +6,7 @@ from .models import SavedPost
 class SavedPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = SavedPost
-        fields = ['id', 'user', 'post_id', 'title', 'content', 'link', 'saved_at']
-        read_only_fields = ['id', 'user', 'saved_at']
+        fields = ['post_id', 'title', 'url']  # Specify the fields you want to include in the serialized data
 
 
 class PostSerializer(serializers.ModelSerializer):

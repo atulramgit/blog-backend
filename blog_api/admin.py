@@ -9,5 +9,5 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(SavedPost)
 class SavedPostAdmin(admin.ModelAdmin):
-    list_display = ('user', 'title', 'post_id', 'saved_at')
+    list_display = ('user', 'title', 'post_id')
     search_fields = ('user__username', 'post_id', 'title')

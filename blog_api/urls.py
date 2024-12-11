@@ -9,5 +9,4 @@ urlpatterns = [
     path("", PostList.as_view(), name="listcreate"),
     path('comments/', CommentListCreateView.as_view(), name='comments-list-create'),
     path('saved-posts/', SavePostView.as_view(), name='saved-posts'),
-
 ]
